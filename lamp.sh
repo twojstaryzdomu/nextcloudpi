@@ -24,7 +24,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 install()
 {
-    set -x
+    [ -z "${DBG}" ] || set -${DBG}
     # Setup apt repository for php 8
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
     echo "deb https://packages.sury.org/php/ bullseye main" > /etc/apt/sources.list.d/php.list
