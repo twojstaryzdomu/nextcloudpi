@@ -11,7 +11,7 @@
 
 install()
 {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install --no-install-recommends -y nfs-kernel-server 
   systemctl disable nfs-kernel-server
   systemctl mask nfs-blkmap
