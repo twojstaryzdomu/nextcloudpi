@@ -9,7 +9,7 @@ _(The translated README pages are not updated at this time)_
 [![Forum icon][forum-badge]][nc-forum-support]
 
 <p align="center">
-  <img src="https://github.com/nextcloud/nextcloudpi/blob/master/ncp-app/img/app.svg"
+  <img src="https://github.com/twojstaryzdomu/nextcloudpi/blob/master/ncp-app/img/app.svg"
        width="120"
        height="85"
        alt="NextcloudPi logo">
@@ -169,7 +169,7 @@ Packages
 ### Raspberry Pi IMG
 
 ```
-git clone https://github.com/nextcloud/nextcloudpi.git
+git clone https://github.com/twojstaryzdomu/nextcloudpi.git
 cd nextcloudpi
 ./build/build-SD-rpi.sh
 ```
@@ -195,13 +195,13 @@ _Note: this assumes a clean Debian install, and there is no rollback method_
 This is executed as `root` as indicated by the `#`
 
 ```
-# curl -sSL https://raw.githubusercontent.com/nextcloud/nextcloudpi/master/install.sh | bash
+# curl -sSL https://raw.githubusercontent.com/twojstaryzdomu/nextcloudpi/master/install.sh | bash
 ```
 
 If you're not `root` you can run it with `sudo` like so
 
 ```
-curl -sSL https://raw.githubusercontent.com/nextcloud/nextcloudpi/master/install.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/twojstaryzdomu/nextcloudpi/master/install.sh | sudo bash
 ```
 
 ## Links
@@ -230,7 +230,7 @@ You can find us on the [Forum][nc-forum], [Telegram][chat-telegram] or [Matrix][
 
 [ncp-docker-hub]: https://hub.docker.com/r/ownyourbits/nextcloudpi
 
-[ncp-releases]: https://github.com/nextcloud/nextcloudpi/releases
+[ncp-releases]: https://github.com/twojstaryzdomu/nextcloudpi/releases
 
 [nc-github]: https://github.com/nextcloud
 
@@ -254,23 +254,23 @@ You can find us on the [Forum][nc-forum], [Telegram][chat-telegram] or [Matrix][
 
 <!-- TESTS -->
 
-[vm-tests]: https://github.com/nextcloud/nextcloudpi/actions/workflows/vm-tests.yml
+[vm-tests]: https://github.com/twojstaryzdomu/nextcloudpi/actions/workflows/vm-tests.yml
 
-[docker-tests]: https://github.com/nextcloud/nextcloudpi/actions/workflows/build-docker.yml
+[docker-tests]: https://github.com/twojstaryzdomu/nextcloudpi/actions/workflows/build-docker.yml
 
 <!-- BADGES -->
 
-[gh-vm-tests-badge]: https://github.com/nextcloud/nextcloudpi/actions/workflows/vm-tests.yml/badge.svg
+[gh-vm-tests-badge]: https://github.com/twojstaryzdomu/nextcloudpi/actions/workflows/vm-tests.yml/badge.svg
 
-[gh-docker-tests-badge]: https://github.com/nextcloud/nextcloudpi/actions/workflows/build-docker.yml/badge.svg
+[gh-docker-tests-badge]: https://github.com/twojstaryzdomu/nextcloudpi/actions/workflows/build-docker.yml/badge.svg
 
-[gh-vm-tests-badge-devel]: https://github.com/nextcloud/nextcloudpi/actions/workflows/vm-tests.yml/badge.svg?branch=devel
+[gh-vm-tests-badge-devel]: https://github.com/twojstaryzdomu/nextcloudpi/actions/workflows/vm-tests.yml/badge.svg?branch=devel
 
-[gh-docker-tests-badge-devel]: https://github.com/nextcloud/nextcloudpi/actions/workflows/build-docker.yml/badge.svg?branch=devel
+[gh-docker-tests-badge-devel]: https://github.com/twojstaryzdomu/nextcloudpi/actions/workflows/build-docker.yml/badge.svg?branch=devel
 
-[vm-tests-badge]: https://github.com/nextcloud/nextcloudpi/workflows/VM%20Integration%20Tests/badge.svg
+[vm-tests-badge]: https://github.com/twojstaryzdomu/nextcloudpi/workflows/VM%20Integration%20Tests/badge.svg
 
-[docker-tests-badge]: https://github.com/nextcloud/nextcloudpi/actions/workflows/build-docker.yml/badge.svg
+[docker-tests-badge]: https://github.com/twojstaryzdomu/nextcloudpi/actions/workflows/build-docker.yml/badge.svg
 
 [telegram-badge]: https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white
 
