@@ -36,7 +36,7 @@ apt-get install --no-install-recommends -y git ca-certificates sudo lsb-release 
 if [[ "${CODE_DIR}" == "" ]]; then
   echo "Getting build code..."
   CODE_DIR="${TMPDIR}"/nextcloudpi
-  git clone -b "${BRANCH}" https://github.com/nextcloud/nextcloudpi.git "${CODE_DIR}"
+  git clone -b "${BRANCH}" https://github.com/twojstaryzdomu/nextcloudpi.git "${CODE_DIR}"
 fi
 cd "${CODE_DIR}"
 
