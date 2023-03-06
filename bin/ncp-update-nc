@@ -90,7 +90,7 @@ trap cleanup EXIT
 ####################
 URL="https://download.nextcloud.com/server/releases/nextcloud-$VER.tar.bz2"
 echo "Download Nextcloud $VER..."
-wget -q "$URL" -O nextcloud.tar.bz2 || { echo "Error downloading"; exit 1; }
+wget -cq "$URL" -O nextcloud.tar.bz2 || { echo "Error downloading"; exit 1; }
 
 # backup
 ####################
@@ -130,7 +130,7 @@ trap rollback_simple INT TERM HUP ERR
 echo "Install Nextcloud $VER..."
 mv -T nextcloud nextcloud-old
 tar -xf nextcloud.tar.bz2             # && false # test point
-rm -rf /var/www/nextcloud.tar.bz2
+[ -n "${KEEP_TAR}" ] || rm -rf /var/www/nextcloud.tar.bz2
 
 # copy old config
 ####################
