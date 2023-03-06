@@ -244,7 +244,7 @@ then
     rm /etc/apt/sources.list.d/php.list
     [ -n "${NOUPDATE}" ] || apt-get update
     apt-get remove --purge -y "${PHP_PACKAGES_NEW[@]}"
-    apt-get install -y --no-install-recommends -t "$RELEASE" "${PHP_PACKAGES_OLD[@]}"
+    apt-get install -y --no-install-recommends -t "$PHPREL" "${PHP_PACKAGES_OLD[@]}"
     set_ncpcfg "php_version" "${PHPVER_OLD}"
     install_template "php/opcache.ini.sh" "/etc/php/${PHPVER_NEW}/mods-available/opcache.ini"
     run_app nc-limits
@@ -275,7 +275,7 @@ then
 
   echo "Install PHP ${PHPVER_NEW}..."
   install_with_shadow_workaround --no-install-recommends systemd
-  apt-get install -y --no-install-recommends -t "$RELEASE" "${PHP_PACKAGES_NEW[@]}"
+  apt-get install -y --no-install-recommends -t "$PHPREL" "${PHP_PACKAGES_NEW[@]}"
 
   set_ncpcfg "php_version" "${PHPVER_NEW}"
   install_template "php/opcache.ini.sh" "/etc/php/${PHPVER_NEW}/mods-available/opcache.ini"
