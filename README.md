@@ -204,6 +204,23 @@ If you're not `root` you can run it with `sudo` like so
 curl -sSL https://raw.githubusercontent.com/twojstaryzdomu/nextcloudpi/master/install.sh | sudo bash
 ```
 
+### Environment variables for install.sh
+
+Environment variables control the installation process.
+
+When set to any value:
+
+- `CODE_DIR` - sets the directory where the repo is stored locally, useful when it has been cloned manually
+- `NOUPDATE` - do not run `apt-get update` for every single script
+- `SWAP` - add swap explicitly
+- `KEEP_TAR` - do not remove /var/www/nextcloud.tar.bz2, useful when the script is re-run multiple times
+
+NOTE: `sudo -E` is needed to source non-root user environment i.e.
+
+```
+CODE_DIR=. NOUPDATE=1 sudo -E bash install.sh
+```
+
 ## Links
 
 [Website][ncp-website]
