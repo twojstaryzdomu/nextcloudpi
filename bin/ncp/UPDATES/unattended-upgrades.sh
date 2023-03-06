@@ -11,7 +11,7 @@
 
 install()
 {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install -y --no-install-recommends unattended-upgrades
   rm -f /etc/apt/apt.conf.d/20auto-upgrades /etc/apt/apt.conf.d/02-armbian-periodic
 }

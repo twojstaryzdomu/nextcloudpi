@@ -9,7 +9,7 @@
 
 
 install() {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install -y --no-install-recommends openssh-server
  }
 

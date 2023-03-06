@@ -29,7 +29,7 @@ type mysqld &>/dev/null && echo ">>> WARNING: existing mysqld configuration will
 type mysqld &>/dev/null && mysql -e 'use nextcloud' &>/dev/null && { echo "The 'nextcloud' database already exists. Aborting"; exit 1; }
 
 # get dependencies
-apt-get update
+[ -n "${NOUPDATE}" ] || apt-get update
 apt-get install --no-install-recommends -y git ca-certificates sudo lsb-release wget
 
 # get install code

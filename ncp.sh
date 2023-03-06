@@ -21,7 +21,7 @@ export DEBIAN_FRONTEND=noninteractive
 install()
 {
   # NCP-CONFIG
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   $APTINSTALL git dialog whiptail jq file lsb-release
   mkdir -p "$CONFDIR" "$BINDIR"
 
