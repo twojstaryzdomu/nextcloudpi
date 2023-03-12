@@ -103,10 +103,10 @@ EOF
   # 4 Byte UTF8 support
   ncc config:system:set mysql.utf8mb4 --type boolean --value="true"
 
-  ncc config:system:set trusted_domains 7 --value="nextcloudpi"
-  ncc config:system:set trusted_domains 5 --value="nextcloudpi.local"
-  ncc config:system:set trusted_domains 8 --value="nextcloudpi.lan"
-  ncc config:system:set trusted_domains 3 --value="nextcloudpi.lan"
+  ncc config:system:set trusted_domains 7 --value="${NCHOSTNAME}"
+  ncc config:system:set trusted_domains 5 --value="${NCHOSTNAME}.local"
+  ncc config:system:set trusted_domains 8 --value="${NCHOSTNAME}.lan"
+  ncc config:system:set trusted_domains 3 --value="${NCHOSTNAME}.lan"
 
   # email
   ncc config:system:set mail_smtpmode     --value="sendmail"
@@ -178,7 +178,7 @@ EOF
 
   # other
   ncc config:system:set overwriteprotocol --value=https
-  ncc config:system:set overwrite.cli.url --value="https://nextcloudpi/"
+  ncc config:system:set overwrite.cli.url --value="https://${NCHOSTNAME}/"
 
   # bash completion for ncc
   apt_install bash-completion
