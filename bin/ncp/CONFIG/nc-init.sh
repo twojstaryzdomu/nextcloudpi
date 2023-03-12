@@ -14,9 +14,15 @@ configure()
 {
   echo "Setting up a clean Nextcloud instance... wait until message 'NC init done'"
 
-  # checks
-  local REDISPASS=$( grep "^requirepass" /etc/redis/redis.conf  | cut -d' ' -f2 )
-  [[ "$REDISPASS" == "" ]] && { echo "redis server without a password. Abort"; return 1; }
+  # If redis password is the default one or missing, generate a new one
+  local REDISPASS="$( grep -Po "(?<=^requirepass)\s+\K\S+" ${REDIS_CONF} )"
+  [[ "$REDISPASS" == "default" || "$REDISPASS" == "" ]] && {
+    REDISPASS="$( openssl rand -base64 32 )"
+    echo Provisioning Redis password
+    grep -q "^requirepass" ${REDIS_CONF} \
+      && sed -i -E "s|^requirepass .*|requirepass $REDISPASS|" ${REDIS_CONF} \
+      || echo "requirepass $REDISPASS" >> ${REDIS_CONF}
+  }
 
   ## RE-CREATE DATABASE TABLE
 
@@ -56,7 +62,7 @@ EOF
   if ! pgrep -c redis-server &>/dev/null; then
     mkdir -p /var/run/redis
     chown redis /var/run/redis
-    sudo -u redis redis-server /etc/redis/redis.conf &
+    sudo -u redis redis-server ${REDIS_CONF} &
   fi
 
   while :; do
