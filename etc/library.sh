@@ -52,6 +52,7 @@ command -v jq &>/dev/null || {
   apt-get install -y --no-install-recommends jq
 }
 
+NCHOSTNAME=${NCHOSTNAME:-$(jq -r '.nextcloud_hostname | select( . != null )' < "$NCPCFG")}
 NCLATESTVER=$(jq -r .nextcloud_version < "$NCPCFG")
 PHPVER=$(     jq -r .php_version       < "$NCPCFG")
 PHPREL=$(     jq -r .php_release       < "$NCPCFG")
