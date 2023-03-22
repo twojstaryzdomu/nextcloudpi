@@ -1,3 +1,9 @@
+## [v1.52.0](https://github.com/twojstaryzdomu/nextcloudpi/tree/v1.51.2) (2023-03-22) Update to Nextcloud 26.0.0
+
+### Changes
+
+- Update to NC 26.0.0
+
 ## [v1.51.1](https://github.com/twojstaryzdomu/nextcloudpi/tree/v1.51.1) (2023-03-22) Update to Nextcloud 25.0.4 and Debian Bookworm
 
 ### Changes
