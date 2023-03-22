@@ -117,6 +117,41 @@
 - Prevent docker container startup if the installed Nextcloud version is not compatible
 - Fix missing NCP logo on login page
 
+## [v1.51.0.1](https://github.com/twojstaryzdomu/nextcloudpi/tree/v1.51.0.1) (2023-03-22) Update to Nextcloud 25.0.4 and Debian Bookworm
+
+### Changes
+
+- Update to NC 25.0.4
+- Bookworm compatibility changes
+- Switch to own github repo
+- Disable swap by default unless SWAP env var is set
+- Allow overriding the default NC hostname with NCHOSTNAME env var
+
+### Fixes
+
+- Fix sury.org php source
+- Configure applicable security source for apt-get if missing
+- Do not reset root shell
+- Fix missing apache2 log dir
+- Fix smartmontools service name
+- Fix redis credentials
+- Fix missing redis log dir
+- Fix missing .ocdata before moving data directory
+- Remove admin user files before subsequent reinstalls
+- Restart redis if stale
+- Display correct hostname in ncp activation
+- Fix cfg file update typo
+
+### Development related
+
+- Added environment variables for install.sh
+- Add KEEP_TAR env var to keep NC tarball
+- Add NOUPDATE env var to suppress apt-get update
+- README.md: description of install.sh env vars
+- Enable debug output via DBG=x
+- Use versioned filename for NC tarball
+- Add REINIT env var to re-initialise the configuration from scratch, dropping NC database & user environment
+
 ## [v1.51.0](https://github.com/nextcloud/nextcloudpi/tree/v1.51.0) (2023-01-22) Update to Nextcloud 25.0.3 and new PortCheck Service
 
 ### Changes
