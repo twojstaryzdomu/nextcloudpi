@@ -25,15 +25,15 @@ install()
   [[ -f /usr/lib/systemd/system/nc-provisioning.service ]] && return 0
 
   # Optional packets for Nextcloud and Apps
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   $APTINSTALL lbzip2 iputils-ping jq wget
   # NOTE: php-smbclient in sury but not in Debian sources, we'll use the binary version
   # https://docs.nextcloud.com/server/latest/admin_manual/configuration_files/external_storage/smb.html
-  $APTINSTALL -t $RELEASE smbclient exfat-fuse exfat-utils                      # for external storage
-  $APTINSTALL -t $RELEASE exfat-fuse exfat-utils                                # for external storage
-  $APTINSTALL -t $RELEASE php${PHPVER}-exif                                     # for gallery
-  $APTINSTALL -t $RELEASE php${PHPVER}-bcmath                                   # for LDAP
-  $APTINSTALL -t $RELEASE php${PHPVER}-gmp                                      # for bookmarks
+  $APTINSTALL -t $PHPREL smbclient exfat-fuse exfat-utils                      # for external storage
+  $APTINSTALL -t $PHPREL exfat-fuse exfat-utils                                # for external storage
+  $APTINSTALL -t $PHPREL php${PHPVER}-exif                                     # for gallery
+  $APTINSTALL -t $PHPREL php${PHPVER}-bcmath                                   # for LDAP
+  $APTINSTALL -t $PHPREL php${PHPVER}-gmp                                      # for bookmarks
   #$APTINSTALL -t imagemagick php${PHPVER}-imagick ghostscript   # for gallery
 
 
@@ -49,7 +49,7 @@ install()
   }
 
   $APTINSTALL redis-server
-  $APTINSTALL -t $RELEASE php${PHPVER}-redis
+  $APTINSTALL -t $PHPREL php${PHPVER}-redis
 
   local REDIS_CONF=/etc/redis/redis.conf
   local REDISPASS="default"
@@ -75,6 +75,9 @@ EOF
   chown redis: "$REDIS_CONF"
   usermod -a -G redis www-data
 
+  local REDIS_LOGFILE=$( grep -Po '(?<=^logfile)\s+\K.*' $REDIS_CONF )
+  mkdir -p "${REDIS_LOGFILE%/*}"
+  chown redis: "${REDIS_LOGFILE%/*}"
   service redis-server restart
   update-rc.d redis-server enable
   clear_opcache
@@ -104,15 +107,15 @@ configure()
 
   local URL="https://download.nextcloud.com/server/${PREFIX}releases/nextcloud-$VER.tar.bz2"
   echo "Downloading Nextcloud $VER..."
-  wget -q "$URL" -O nextcloud.tar.bz2 || {
+  wget -cq "$URL" -O nextcloud-${VER}.tar.bz2 || {
     echo "couldn't download $URL"
     return 1
   }
   rm -rf nextcloud
 
   echo "Installing  Nextcloud $VER..."
-  tar -xf nextcloud.tar.bz2
-  rm nextcloud.tar.bz2
+  tar -xf nextcloud-${VER}.tar.bz2
+  [ -n "${KEEP_TAR}" ] || rm -rf nextcloud-${VER}.tar.bz2
 
   ## CONFIGURE FILE PERMISSIONS
   local ocpath='/var/www/nextcloud'

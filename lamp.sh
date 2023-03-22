@@ -24,11 +24,11 @@ export DEBIAN_FRONTEND=noninteractive
 
 install()
 {
-    set -x
+    [ -z "${DBG}" ] || set -${DBG}
     # Setup apt repository for php 8
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-    echo "deb https://packages.sury.org/php/ ${RELEASE%-security} main" > /etc/apt/sources.list.d/php.list
-    apt-get update
+    echo "deb https://packages.sury.org/php/ bullseye main" > /etc/apt/sources.list.d/php.list
+    [ -n "${NOUPDATE}" ] || apt-get update
     $APTINSTALL apt-utils cron curl
     ls -l /var/lock || true
     $APTINSTALL apache2
@@ -45,8 +45,8 @@ install()
         --gecos "systemd Resolver" systemd-resolve
     }
     install_with_shadow_workaround --no-install-recommends systemd
-    $APTINSTALL -t $RELEASE php${PHPVER} php${PHPVER}-curl php${PHPVER}-gd php${PHPVER}-fpm php${PHPVER}-cli php${PHPVER}-opcache \
-                            php${PHPVER}-mbstring php${PHPVER}-xml php${PHPVER}-zip php${PHPVER}-fileinfo php${PHPVER}-ldap \
+    $APTINSTALL -t $PHPREL php${PHPVER} php${PHPVER}-curl php${PHPVER}-gd php${PHPVER}-fpm php${PHPVER}-cli php${PHPVER}-opcache \
+                           php${PHPVER}-mbstring php${PHPVER}-xml php${PHPVER}-zip php${PHPVER}-fileinfo php${PHPVER}-ldap \
                             php${PHPVER}-intl php${PHPVER}-bz2
 
     mkdir -p /run/php

@@ -69,9 +69,10 @@ fi
   LETSENCRYPT_KEY_PATH="${LETSENCRYPT_CERT_BASE_PATH}/privkey.pem"
 }
 
+mkdir -p ${APACHE_LOG_DIR}
 cat <<EOF
-    CustomLog /var/log/apache2/nc-access.log combined
-    ErrorLog  /var/log/apache2/nc-error.log
+    CustomLog ${APACHE_LOG_DIR}/nc-access.log combined
+    ErrorLog  ${APACHE_LOG_DIR}/nc-error.log
     SSLEngine on
     SSLProxyEngine on
     SSLCertificateFile   ${LETSENCRYPT_CERT_PATH:-/etc/ssl/certs/ssl-cert-snakeoil.pem}

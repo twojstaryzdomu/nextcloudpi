@@ -36,7 +36,7 @@ if apt show grub-pc-bin &>/dev/null; then
   $APTINSTALL grub
 fi
 
-apt-get update
+[ -n "${NOUPDATE}" ] || apt-get update
 apt-get upgrade -y
 
 # remove old PHP version
@@ -64,7 +64,7 @@ if [[ -f /usr/bin/raspi-config ]]; then
 fi
 
 # install latest distro
-apt-get update
+[ -n "${NOUPDATE}" ] || apt-get update
 apt-get dist-upgrade -y
 
 # install latest PHP version
