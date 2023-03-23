@@ -1,3 +1,14 @@
+## [v1.52.0](https://github.com/twojstaryzdomu/nextcloudpi/tree/v1.51.2) (2023-03-22) Update to Nextcloud 26.0.0
+
+### Changes
+
+- Update to NC 26.0.0
+
+### Fixes
+
+- ncp-backup: default destination directory same as DESTDIR in nc-backup.cfg
+- ncp-backup: compress by default if COMPRESS in nc-backup.cfg is set to 'yes'
+
 ## [v1.51.1](https://github.com/twojstaryzdomu/nextcloudpi/tree/v1.51.1) (2023-03-22) Update to Nextcloud 25.0.4 and Debian Bookworm
 
 ### Changes
