@@ -21,7 +21,7 @@ export DEBIAN_FRONTEND=noninteractive
 install()
 {
   # NCP-CONFIG
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   $APTINSTALL git dialog whiptail jq file lsb-release
   mkdir -p "$CONFDIR" "$BINDIR"
 
@@ -132,10 +132,8 @@ EOF
   ## NCP USER FOR AUTHENTICATION
   id -u "$WEBADMIN" &>/dev/null || useradd --home-dir /nonexistent "$WEBADMIN"
   echo -e "$WEBPASSWD\n$WEBPASSWD" | passwd "$WEBADMIN"
-  is_docker || is_lxc || {
-    chsh -s /usr/sbin/nologin "$WEBADMIN"
-    chsh -s /usr/sbin/nologin root
-  }
+  is_docker || is_lxc || \
+  chsh -s /usr/sbin/nologin "$WEBADMIN"
 
   ## NCP LAUNCHER
   mkdir -p /home/www
@@ -250,9 +248,9 @@ EOF
     [[ -f /.docker-image ]] || {
       $APTINSTALL avahi-daemon
       sed -i '/^127.0.1.1/d'           /etc/hosts
-      sed -i "\$a127.0.1.1 nextcloudpi $(hostname)" /etc/hosts
+      sed -i "\$a127.0.1.1 ${NCHOSTNAME} $(hostname)" /etc/hosts
     }
-    echo nextcloudpi > /etc/hostname
+    echo ${NCHOSTNAME} > /etc/hostname
 
     ## tag image
     is_docker && local DOCKER_TAG="_docker"

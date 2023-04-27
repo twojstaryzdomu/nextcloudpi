@@ -13,6 +13,8 @@ export BINDIR=/usr/local/bin/ncp
 export NCDIR=/var/www/nextcloud
 export ncc=/usr/local/bin/ncc
 export NCPCFG=${NCPCFG:-etc/ncp.cfg}
+export REDIS_CONF=${REDIS_CONF:-/etc/redis/redis.conf}
+export APACHE_LOG_DIR=${APACHE_LOG_DIR:-/var/log/apache2}
 export ARCH="$(dpkg --print-architecture)"
 [[ "${ARCH}" =~ ^(armhf|arm)$ ]] && ARCH="armv7"
 [[ "${ARCH}" == "arm64" ]] && ARCH=aarch64
@@ -47,15 +49,22 @@ export INIT_SYSTEM
 #)
 
 command -v jq &>/dev/null || {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install -y --no-install-recommends jq
 }
 
+NCHOSTNAME=${NCHOSTNAME:-$(jq -r '.nextcloud_hostname | select( . != null )' < "$NCPCFG")}
 NCLATESTVER=$(jq -r .nextcloud_version < "$NCPCFG")
 PHPVER=$(     jq -r .php_version       < "$NCPCFG")
+PHPREL=$(     jq -r .php_release       < "$NCPCFG")
 RELEASE=$(    jq -r .release           < "$NCPCFG")
 # the default repo in bullseye is bullseye-security
-grep -Eh '^deb ' /etc/apt/sources.list | grep "${RELEASE}-security" > /dev/null && RELEASE="${RELEASE}-security"
+wget -qO /etc/apt/trusted.gpg.d/${RELEASE}-security.gpg http://security.debian.org/debian-security/dists/${RELEASE}-security/Release.gpg
+grep -Eh '^deb ' /etc/apt/sources.list.d/*.list /etc/apt/sources.list 2>/dev/null \
+| grep "${RELEASE}-security" > /dev/null \
+  && RELEASE="${RELEASE}-security" \
+  || echo "deb http://security.debian.org/debian-security ${RELEASE}-security main contrib non-free" >> /etc/apt/sources.list.d/${RELEASE}-security.list
+
 command -v ncc &>/dev/null && NCVER="$(ncc status 2>/dev/null | grep "version:" | awk '{ print $3 }')"
 
 function configure_app()
@@ -527,7 +536,7 @@ function clear_password_fields()
 
 function apt_install()
 {
-  apt-get update --allow-releaseinfo-change
+  [ -n "${NOUPDATE}" ] || apt-get update --allow-releaseinfo-change
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::=--force-confdef -o Dpkg::Options::="--force-confold" "$@"
 }
 
@@ -605,6 +614,12 @@ function clear_opcache() {
     echo "Done."
   }
   service php${PHPVER}-fpm reload
+}
+
+function restart_redis_if_stale() {
+  [ $(systemctl show --timestamp=unix -P ExecMainStartTimestamp redis-server \
+      | cut -f2 -d@ ) -gt $(stat --print %Y ${REDIS_CONF}) ] \
+    || systemctl restart redis-server
 }
 
 # License

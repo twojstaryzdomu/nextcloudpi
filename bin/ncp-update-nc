@@ -80,7 +80,7 @@ cleanup() {
   local RET=$?
   set +eE
   echo "Clean up..."
-  rm -rf "$BASEDIR"/nextcloud.tar.bz2 "$BASEDIR"/nextcloud-old
+  rm -rf "$BASEDIR"/nextcloud-${VER}.tar.bz2 "$BASEDIR"/nextcloud-old
   trap "" EXIT
   exit $RET
 }
@@ -90,7 +90,7 @@ trap cleanup EXIT
 ####################
 URL="https://download.nextcloud.com/server/releases/nextcloud-$VER.tar.bz2"
 echo "Download Nextcloud $VER..."
-wget -q "$URL" -O nextcloud.tar.bz2 || { echo "Error downloading"; exit 1; }
+wget -cq "$URL" -O nextcloud-${VER}.tar.bz2 || { echo "Error downloading"; exit 1; }
 
 # backup
 ####################
@@ -129,8 +129,8 @@ trap rollback_simple INT TERM HUP ERR
 ####################
 echo "Install Nextcloud $VER..."
 mv -T nextcloud nextcloud-old
-tar -xf nextcloud.tar.bz2             # && false # test point
-rm -rf /var/www/nextcloud.tar.bz2
+tar -xf nextcloud-${VER}.tar.bz2             # && false # test point
+[ -n "${KEEP_TAR}" ] || rm -rf /var/www/nextcloud-${VER}.tar.bz2
 
 # copy old config
 ####################
@@ -163,7 +163,7 @@ rollback() {
   set +eE
   trap "" INT TERM HUP ERR EXIT
   echo -e "Abort\nClean up..."
-  rm -rf /var/www/nextcloud.tar.bz2 "$BASEDIR"/nextcloud-old
+  rm -rf /var/www/nextcloud-${VER}.tar.bz2 "$BASEDIR"/nextcloud-old
   echo "Rolling back to backup $BKP..."
   local TMPDATA
   mkdir -p "$BASEDIR/recovery/"
@@ -242,9 +242,9 @@ then
     service "php${PHPVER_NEW}-fpm" stop
     a2disconf php${PHPVER_NEW}-fpm
     rm /etc/apt/sources.list.d/php.list
-    apt-get update
+    [ -n "${NOUPDATE}" ] || apt-get update
     apt-get remove --purge -y "${PHP_PACKAGES_NEW[@]}"
-    apt-get install -y --no-install-recommends -t "$RELEASE" "${PHP_PACKAGES_OLD[@]}"
+    apt-get install -y --no-install-recommends -t "$PHPREL" "${PHP_PACKAGES_OLD[@]}"
     set_ncpcfg "php_version" "${PHPVER_OLD}"
     install_template "php/opcache.ini.sh" "/etc/php/${PHPVER_NEW}/mods-available/opcache.ini"
     run_app nc-limits
@@ -260,7 +260,7 @@ then
   # Setup apt repository for php 8
   wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
   echo "deb https://packages.sury.org/php/ ${RELEASE%-security} main" > /etc/apt/sources.list.d/php.list
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
 
   clear_opcache
 
@@ -275,7 +275,7 @@ then
 
   echo "Install PHP ${PHPVER_NEW}..."
   install_with_shadow_workaround --no-install-recommends systemd
-  apt-get install -y --no-install-recommends -t "$RELEASE" "${PHP_PACKAGES_NEW[@]}"
+  apt-get install -y --no-install-recommends -t "$PHPREL" "${PHP_PACKAGES_NEW[@]}"
 
   set_ncpcfg "php_version" "${PHPVER_NEW}"
   install_template "php/opcache.ini.sh" "/etc/php/${PHPVER_NEW}/mods-available/opcache.ini"

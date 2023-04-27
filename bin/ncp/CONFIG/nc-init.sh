@@ -14,9 +14,15 @@ configure()
 {
   echo "Setting up a clean Nextcloud instance... wait until message 'NC init done'"
 
-  # checks
-  local REDISPASS=$( grep "^requirepass" /etc/redis/redis.conf  | cut -d' ' -f2 )
-  [[ "$REDISPASS" == "" ]] && { echo "redis server without a password. Abort"; return 1; }
+  # If redis password is the default one or missing, generate a new one
+  local REDISPASS="$( grep -Po "(?<=^requirepass)\s+\K\S+" ${REDIS_CONF} )"
+  [[ "$REDISPASS" == "default" || "$REDISPASS" == "" ]] && {
+    REDISPASS="$( openssl rand -base64 32 )"
+    echo Provisioning Redis password
+    grep -q "^requirepass" ${REDIS_CONF} \
+      && sed -i -E "s|^requirepass .*|requirepass $REDISPASS|" ${REDIS_CONF} \
+      || echo "requirepass $REDISPASS" >> ${REDIS_CONF}
+  }
 
   ## RE-CREATE DATABASE TABLE
 
@@ -56,7 +62,7 @@ EOF
   if ! pgrep -c redis-server &>/dev/null; then
     mkdir -p /var/run/redis
     chown redis /var/run/redis
-    sudo -u redis redis-server /etc/redis/redis.conf &
+    sudo -u redis redis-server ${REDIS_CONF} &
   fi
 
   while :; do
@@ -69,6 +75,8 @@ EOF
 
   cd /var/www/nextcloud/
   rm -f config/config.php
+  [ ! -d /var/www/nextcloud/${ADMINUSER} ] \
+    || rm -rf /var/www/nextcloud/${ADMINUSER}
   ncc maintenance:install --database \
     "mysql" --database-name "nextcloud"  --database-user "$DBADMIN" --database-pass \
     "$DBPASSWD" --admin-user "$ADMINUSER" --admin-pass "$ADMINPASS"
@@ -95,6 +103,7 @@ EOF
   local UPLOADTMPDIR=/var/www/nextcloud/data/tmp
   mkdir -p "$UPLOADTMPDIR"
   chown www-data:www-data "$UPLOADTMPDIR"
+  restart_redis_if_stale
   ncc config:system:set tempdirectory --value "$UPLOADTMPDIR"
   sed -i "s|^;\?upload_tmp_dir =.*$|upload_tmp_dir = $UPLOADTMPDIR|" /etc/php/${PHPVER}/cli/php.ini
   sed -i "s|^;\?upload_tmp_dir =.*$|upload_tmp_dir = $UPLOADTMPDIR|" /etc/php/${PHPVER}/fpm/php.ini
@@ -103,10 +112,10 @@ EOF
   # 4 Byte UTF8 support
   ncc config:system:set mysql.utf8mb4 --type boolean --value="true"
 
-  ncc config:system:set trusted_domains 7 --value="nextcloudpi"
-  ncc config:system:set trusted_domains 5 --value="nextcloudpi.local"
-  ncc config:system:set trusted_domains 8 --value="nextcloudpi.lan"
-  ncc config:system:set trusted_domains 3 --value="nextcloudpi.lan"
+  ncc config:system:set trusted_domains 7 --value="${NCHOSTNAME}"
+  ncc config:system:set trusted_domains 5 --value="${NCHOSTNAME}.local"
+  ncc config:system:set trusted_domains 8 --value="${NCHOSTNAME}.lan"
+  ncc config:system:set trusted_domains 3 --value="${NCHOSTNAME}.lan"
 
   # email
   ncc config:system:set mail_smtpmode     --value="sendmail"
@@ -184,7 +193,7 @@ EOF
 
   # other
   ncc config:system:set overwriteprotocol --value=https
-  ncc config:system:set overwrite.cli.url --value="https://nextcloudpi/"
+  ncc config:system:set overwrite.cli.url --value="https://${NCHOSTNAME}/"
 
   # bash completion for ncc
   apt_install bash-completion

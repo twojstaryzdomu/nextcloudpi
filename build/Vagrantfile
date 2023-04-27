@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
     set -e
     BRANCH=master
     #BRANCH=devel  # uncomment to install devel
-    apt-get update
+    [ -n "${NOUPDATE}" ] || apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git ca-certificates
 
     # install

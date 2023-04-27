@@ -11,8 +11,8 @@
 
 install()
 {
-  set -x
-  apt-get update
+  [ -z "${DBG}" ] || set -${DBG}
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install --no-install-recommends -y dnsmasq
   rc=0
   service dnsmasq status > /dev/null 2>&1 || rc=$?
