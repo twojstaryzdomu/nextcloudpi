@@ -33,6 +33,17 @@
 - Use systemd backend for ssh jail in `fail2ban` (/var/log/auth.log may not be available)
 - Increase mysql max_allowed_packet (fixes [#1752](https://github.com/nextcloud/nextcloudpi/issues/1752))
 
+## [v1.52.2.1](https://github.com/twojstaryzdomu/nextcloudpi/tree/v1.51.2.1) (2023-03-22) Update to Nextcloud 26.0.0
+
+### Changes
+
+- Update to NC 26.0.0
+
+### Fixes
+
+- ncp-backup: default destination directory same as DESTDIR in nc-backup.cfg
+- ncp-backup: compress by default if COMPRESS in nc-backup.cfg is set to 'yes'
+
 ## [v1.51.1](https://github.com/nextcloud/nextcloudpi/tree/v1.51.1) (2023-04-08) Support for Nextcloud 25.0.5 and SSH/updater fixes
 
 ### Changes
