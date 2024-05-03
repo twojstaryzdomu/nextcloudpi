@@ -234,6 +234,9 @@ NOTE: `sudo -E` is needed to source non-root user environment i.e.
 CODE_DIR=. NOUPDATE=1 sudo -E bash install.sh
 ```
 
+Also, for debug purposes:
+- `DBG=x` - print commands and their arguments as they are executed.
+
 ## Links
 
 [Website][ncp-website]
