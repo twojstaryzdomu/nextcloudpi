@@ -37,7 +37,7 @@ save_maintenance_mode
 
 # Perform dist-upgrade
 
-apt-get update && apt-get upgrade -y
+[ -n "${NOUPDATE}" ] || apt-get update && apt-get upgrade -y
 for aptlist in /etc/apt/sources.list /etc/apt/sources.list.d/{php.list,armbian.list,raspi.list}
 do
   [ -f "$aptlist" ] && sed -i -e "s/bullseye/bookworm/g" "$aptlist"
@@ -49,7 +49,7 @@ do
     sed -i -e "s/deb/#deb/g" "$aptlist"
   }
 done
-apt-get update
+[ -n "${NOUPDATE}" ] || apt-get update
 apt-get upgrade -y dpkg
 apt-get upgrade -y --without-new-pkgs
 if is_lxc

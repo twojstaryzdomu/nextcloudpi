@@ -106,7 +106,7 @@ EOF
   # shellcheck disable=SC2016
   sed -i 's|status_of_proc "$DAEMON" "$NAME" ${PIDFILE:="-p ${PIDFILE}"}|status_of_proc ${PIDFILE:+-p "$PIDFILE"} "$DAEMON" "$NAME"|' /lib/init/init-d-script
 
-  apt-get update --allow-releaseinfo-change
+  [ -n "${NOUPDATE}" ] || apt-get update --allow-releaseinfo-change
   install_with_shadow_workaround -o Dpkg::Options::=--force-confdef -o Dpkg::Options::="--force-confold" prometheus-node-exporter
 
   if is_docker

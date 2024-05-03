@@ -50,7 +50,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     set -ex
 
     # allow oldstable
-    apt-get update --allow-releaseinfo-change
+    [ -n "${NOUPDATE}" ] || apt-get update --allow-releaseinfo-change
 
     # As of 10-2018 this upgrades raspi-kernel and messes up wifi and BTRFS
     #apt-get upgrade -y
@@ -72,7 +72,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     # work around dhcpcd Raspbian bug
     # https://lb.raspberrypi.org/forums/viewtopic.php?t=230779
     # https://github.com/nextcloud/nextcloudpi/issues/938
-    apt-get update
+    [ -n "${NOUPDATE}" ] || apt-get update
     apt-get install -y --no-install-recommends haveged
     systemctl enable haveged.service
 

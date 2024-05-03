@@ -10,7 +10,7 @@
 
 install()
 {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install -y --no-install-recommends libapache2-mod-security2 modsecurity-crs
   a2dismod security2
 
