@@ -13,6 +13,7 @@ export BINDIR=/usr/local/bin/ncp
 export NCDIR=/var/www/nextcloud
 export ncc=/usr/local/bin/ncc
 export NCPCFG=${NCPCFG:-etc/ncp.cfg}
+export APACHE_LOG_DIR=${APACHE_LOG_DIR:-/var/log/apache2}
 export ARCH="$(dpkg --print-architecture)"
 export DB_PREFIX="$(php -r 'include("/var/www/nextcloud/config/config.php"); echo $CONFIG['"'dbtableprefix'"'];' || echo 'oc_')"
 [[ "${ARCH}" =~ ^(armhf|arm)$ ]] && ARCH="armv7"
