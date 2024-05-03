@@ -76,9 +76,6 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     apt-get install -y --no-install-recommends haveged
     systemctl enable haveged.service
 
-    # harden SSH further for Raspbian
-    sed -i 's|^#PermitRootLogin .*|PermitRootLogin no|' /etc/ssh/sshd_config
-
     # cleanup
     source etc/library.sh && run_app_unsafe post-inst.sh
     rm /etc/resolv.conf

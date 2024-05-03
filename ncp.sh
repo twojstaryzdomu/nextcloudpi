@@ -81,10 +81,7 @@ EOF
   ## NCP USER FOR AUTHENTICATION
   id -u "$WEBADMIN" &>/dev/null || useradd --home-dir /nonexistent "$WEBADMIN"
   echo -e "$WEBPASSWD\n$WEBPASSWD" | passwd "$WEBADMIN"
-  is_docker || is_lxc || {
-    chsh -s /usr/sbin/nologin "$WEBADMIN"
-    passwd -l root
-  }
+  is_docker || is_lxc || chsh -s /usr/sbin/nologin "$WEBADMIN"
 
   ## NCP LAUNCHER
   mkdir -p /home/www
