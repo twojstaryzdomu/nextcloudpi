@@ -102,17 +102,17 @@ configure()
   ## DOWNLOAD AND (OVER)WRITE NEXTCLOUD
   cd /var/www/
 
-  local URL="https://download.nextcloud.com/server/${PREFIX}releases/nextcloud-$VER.tar.bz2"
-  echo "Downloading Nextcloud $VER..."
-  wget -q "$URL" -O nextcloud.tar.bz2 || {
+  local URL="https://download.nextcloud.com/server/${PREFIX}releases/nextcloud-${VER}.tar.bz2"
+  echo "Downloading Nextcloud ${VER}..."
+  wget -cq "$URL" -O nextcloud-${VER}.tar.bz2 || {
     echo "couldn't download $URL"
     return 1
   }
   rm -rf nextcloud
 
-  echo "Installing  Nextcloud $VER..."
-  tar -xf nextcloud.tar.bz2
-  rm nextcloud.tar.bz2
+  echo "Installing  Nextcloud ${VER}..."
+  tar -xf nextcloud-${VER}.tar.bz2
+  [ -n "${KEEP_TAR}" ] || rm -rf nextcloud-${VER}.tar.bz2
 
   ## CONFIGURE FILE PERMISSIONS
   local ocpath='/var/www/nextcloud'
