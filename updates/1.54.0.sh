@@ -2,18 +2,10 @@
 
 set -e
 
-echo "Update root login prevention method..."
+echo "Update root shell..."
 if getent passwd "root" | grep -e '/usr/sbin/nologin'
 then
   sed -i '/^root/s|/usr/sbin/nologin|/bin/bash|' /etc/passwd
-  passwd -l root
-  if grep '^PermitRootLogin' /etc/ssh/sshd_config
-  then
-    sed -i -e 's/^PermitRootLogin.*$/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
-  else
-    echo 'PermitRootLogin prohibit-password' >> /etc/ssh/sshd_config
-  fi
-  systemctl reload ssh
 fi
 echo "done."
 
