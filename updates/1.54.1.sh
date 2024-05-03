@@ -8,7 +8,7 @@ do
 done
 echo "done"
 
-apt-get update
+[ -n "${NOUPDATE}" ] || apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends zstd
 
 . /etc/os-release

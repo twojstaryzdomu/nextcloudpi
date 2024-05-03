@@ -16,7 +16,7 @@ tmpl_get_destination() {
 
 install()
 {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install -y --no-install-recommends pigz
 }
 

@@ -11,7 +11,7 @@
 
 install()
 {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install -y --no-install-recommends udiskie inotify-tools
 
   cat > /etc/udev/rules.d/99-udisks2.rules <<'EOF'

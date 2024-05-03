@@ -48,7 +48,7 @@ export INIT_SYSTEM
 #)
 
 command -v jq &>/dev/null || {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install -y --no-install-recommends jq
 }
 
@@ -600,7 +600,7 @@ function clear_password_fields()
 
 function apt_install()
 {
-  apt-get update --allow-releaseinfo-change
+  [ -n "${NOUPDATE}" ] || apt-get update --allow-releaseinfo-change
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::=--force-confdef -o Dpkg::Options::="--force-confold" "$@"
 }
 

@@ -19,7 +19,7 @@ php_restore() {
   a2disconf php${PHPVER_NEW}-fpm
   wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
   echo "deb https://packages.sury.org/php/ ${RELEASE%-security} main" > /etc/apt/sources.list.d/php.list
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get remove --purge -y "${PHP_PACKAGES_NEW[@]}"
   apt-get install -y --no-install-recommends -t "$RELEASE" "${PHP_PACKAGES_OLD[@]}"
   set_ncpcfg "php_version" "${PHPVER_OLD}"
@@ -34,7 +34,7 @@ php_restore() {
 
 trap php_restore INT TERM HUP ERR
 
-apt-get update
+[ -n "${NOUPDATE}" ] || apt-get update
 
 clear_opcache
 
