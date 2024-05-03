@@ -11,12 +11,14 @@
 
 is_active()
 {
+  [ -n "${SWAP}" ] || { echo "no SWAP added by default, enable by setting the SWAP variable";                    return 0; }
   local DIR=$( swapon -s | sed -n 2p | awk '{ print $1 }' )
   [[ "$DIR" != "" ]] && [[ "$DIR" != "/var/swap" ]]
 }
 
 configure()
 {
+  [ -n "${SWAP}" ] || { echo "no SWAP added by default, enable by setting the SWAP variable";                    return 0; }
   local ORIG="$( swapon | tail -1 | awk '{ print $1 }' )"
   local DSTDIR="$(dirname "$SWAPFILE")"
   [[ "$ORIG" == "$SWAPFILE" ]] && { echo "nothing to do";                    return 0; }
@@ -47,6 +49,7 @@ configure()
 
 install()
 {
+  [ -n "${SWAP}" ] || { echo "no SWAP added by default, enable by setting the SWAP variable";                    return 0; }
   if [[ "$(stat -fc%T /var)" != "btrfs" ]]; then
     apt_install dphys-swapfile
   fi
