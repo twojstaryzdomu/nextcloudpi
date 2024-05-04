@@ -243,7 +243,7 @@ EOF
 EOF
 
     echo '
-NCP is not activated yet. Please enter https://nextcloudpi.local or this instance'"'"'s local IP address in your webbrowser to complete activation. You can find detailed instructions at https://nextcloudpi.com/activate
+NCP is not activated yet. Please enter https://'${NCHOSTNAME}'.local or this instance'"'"'s local IP address in your webbrowser to complete activation. You can find detailed instructions at https://nextcloudpi.com/activate
 ' >> /etc/issue
     chmod a+x /etc/update-motd.d/*
 
@@ -251,9 +251,9 @@ NCP is not activated yet. Please enter https://nextcloudpi.local or this instanc
     [[ -f /.docker-image ]] || {
       $APTINSTALL avahi-daemon
       sed -i '/^127.0.1.1/d'           /etc/hosts
-      sed -i "\$a127.0.1.1 nextcloudpi $(hostname)" /etc/hosts
+      sed -i "\$a127.0.1.1 ${NCHOSTNAME} $(hostname)" /etc/hosts
     }
-    echo nextcloudpi > /etc/hostname
+    echo ${NCHOSTNAME} > /etc/hostname
 
     ## tag image
     is_docker && local DOCKER_TAG="_docker"

@@ -96,7 +96,7 @@ IP="$(get_ip)"
 
 echo "Done.
 
-First: Visit https://$IP/  https://nextcloudpi.local/ (also https://nextcloudpi.lan/ or https://nextcloudpi/ on windows and mac)
+First: Visit https://$IP/  https://${NCHOSTNAME}.local/ (also https://${NCHOSTNAME}.lan/ or https://${NCHOSTNAME}/ on windows and mac)
 to activate your instance of NC, and save the auto generated passwords. You may review or reset them
 anytime by using nc-admin and nc-passwd.
 Second: Type 'sudo ncp-config' to further configure NCP, or access ncp-web on https://$IP:4443/

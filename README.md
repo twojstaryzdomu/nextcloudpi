@@ -214,11 +214,12 @@ When set to any value:
 - `NOUPDATE` - do not run `apt-get update` for every single script
 - `SWAP` - add swap explicitly
 - `KEEP_TAR` - do not remove /var/www/nextcloud.tar.bz2, useful when the script is re-run multiple times
+- `NCHOSTNAME` - overrides the default NC hostname, defined in `etc/ncp.cfg`
 
 NOTE: `sudo -E` is needed to source non-root user environment i.e.
 
 ```
-CODE_DIR=. NOUPDATE=1 sudo -E bash install.sh
+CODE_DIR=. NOUPDATE=1 NCHOSTNAME=my_own_hostname sudo -E bash install.sh
 ```
 
 Also, for debug purposes:
