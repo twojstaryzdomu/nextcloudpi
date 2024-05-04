@@ -7,15 +7,17 @@ set -x
 ## redis provisioning
 
 CFG=/var/www/nextcloud/config/config.php
-REDISPASS="$( grep "^requirepass" /etc/redis/redis.conf | cut -f2 -d' ' )"
+REDISPASS="$( grep -Po "(?<=^requirepass)\s+\K\S+" ${REDIS_CONF} )"
 
-### IF redis password is the default one, generate a new one
+### IF redis password is the default one or missing, generate a new one
 
-[[ "$REDISPASS" == "default" ]] && {
+[[ "$REDISPASS" == "default" || "$REDISPASS" == "" ]] && {
   REDISPASS="$( openssl rand -base64 32 )"
   echo Provisioning Redis password
-  sed -i -E "s|^requirepass .*|requirepass $REDISPASS|" /etc/redis/redis.conf
-  chown redis:redis /etc/redis/redis.conf
+  grep -q "^requirepass" ${REDIS_CONF} \
+    && sed -i -E "s|^requirepass .*|requirepass $REDISPASS|" ${REDIS_CONF} \
+    || echo "requirepass $REDISPASS" >> ${REDIS_CONF}
+  chown redis:redis ${REDIS_CONF}
   is_docker || systemctl restart redis
 }
 
