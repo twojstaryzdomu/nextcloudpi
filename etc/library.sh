@@ -636,6 +636,12 @@ function clear_opcache() {
   service php${PHPVER}-fpm reload
 }
 
+function restart_redis_if_stale() {
+  [ $(systemctl show --timestamp=unix -P ExecMainStartTimestamp redis-server \
+      | cut -f2 -d@ ) -gt $(stat --print %Y ${REDIS_CONF}) ] \
+    || systemctl restart redis-server
+}
+
 # License
 #
 # This script is free software; you can redistribute it and/or modify it
