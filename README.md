@@ -216,6 +216,7 @@ When set to any value:
 - `KEEP_TAR` - do not remove /var/www/nextcloud.tar.bz2, useful when the script is re-run multiple times
 - `NCHOSTNAME` - overrides the default NC hostname, defined in `etc/ncp.cfg`
 - `REINIT` - re-initialise the configuration from scratch: drop NC database & user environment
+- `NCDATA` - overrides the NC data directory, defined in `etc/ncp-config.d/nc-datadir.cfg`
 
 NOTE: `sudo -E` is needed to source non-root user environment i.e.
 

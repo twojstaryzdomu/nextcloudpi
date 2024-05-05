@@ -448,7 +448,8 @@ jobs:
             ssh "${SSH_OPTIONS[@]}" "root@${SERVER_ADDRESS}" tail /var/log/ncp.log;
             echo "==========================================="
             echo "nextcloud.log:"
-            ssh "${SSH_OPTIONS[@]}" "root@${SERVER_ADDRESS}" tail /opt/ncdata/data/nextcloud.log;
+            NCDATA="$(ssh "${SSH_OPTIONS[@]}" "root@${SERVER_ADDRESS}" jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
+            ssh "${SSH_OPTIONS[@]}" "root@${SERVER_ADDRESS}" tail "${NCDATA}"/data/nextcloud.log;
             exit 1
           }
           echo "test_result=success" >> "$GITHUB_OUTPUT"

@@ -239,7 +239,8 @@ jobs:
 #          systemd-run --user --scope -p "Delegate=yes" "$LXC" launch -q "ncp/test" ncp || \
 #          sudo systemd-run --scope -p "Delegate=yes" "$LXC" launch -q "ncp/test" ncp
 #          sudo "$LXC" exec ncp -- bash -c 'while [ "$(systemctl is-system-running 2>/dev/null)" != "running" ] && [ "$(systemctl is-system-running 2>/dev/null)" != "degraded" ]; do :; done'
-#          sudo "$LXC" exec ncp -- rm -f /opt/ncdata/data/nextcloud.log
+#          NCDATA="$("$LXC" exec ncp -- jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
+#          sudo "$LXC" exec ncp -- rm -f "${NCDATA}"/data/nextcloud.log
 #          sleep 30
 #          ip="$(sudo "$LXC" list -c n4 -f csv | grep '^ncp' | cut -d ',' -f2)"
 #          ip="${ip/% *}"
@@ -304,7 +305,8 @@ jobs:
 #            sudo "$LXC" exec ncp -- bash -c "DBG=x ncp-update-nc ${latest_nc_version?}"
 #          fi
 #
-#          sudo "$LXC" exec ncp -- rm -f /opt/ncdata/data/nextcloud.log
+#          NCDATA="$("$LXC" exec ncp -- jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
+#          sudo "$LXC" exec ncp -- rm -f "${NCDATA}"/data/nextcloud.log
 #
 #          sudo "$LXC" stop ncp
 #      - name: Relaunch container
@@ -403,7 +405,8 @@ jobs:
           systemd-run --user --scope -p "Delegate=yes" "$LXC" launch -q "${LXC_ARGS[@]}" "ncp/update" ncp || \
           sudo systemd-run --scope -p "Delegate=yes" "$LXC" launch -q "${LXC_ARGS[@]}" "ncp/update" ncp
           sudo "$LXC" exec ncp -- bash -c 'while [ "$(systemctl is-system-running 2>/dev/null)" != "running" ] && [ "$(systemctl is-system-running 2>/dev/null)" != "degraded" ]; do :; done'
-          sudo "$LXC" exec ncp -- rm -f /opt/ncdata/data/nextcloud.log
+          NCDATA="$("$LXC" exec ncp -- jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
+          sudo "$LXC" exec ncp -- rm -f "${NCDATA}"/data/nextcloud.log
           sleep 30
           ip="$(sudo "$LXC" list -c n4 -f csv | grep '^ncp' | cut -d ',' -f2)"
           ip="${ip/% *}"
@@ -469,7 +472,8 @@ jobs:
             sudo "$LXC" exec ncp -- bash -c "DBG=x ncp-update-nc ${latest_nc_version?}"
           fi
   
-          sudo "$LXC" exec ncp -- rm -f /opt/ncdata/data/nextcloud.log
+          NCDATA="$("$LXC" exec ncp -- jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
+          sudo "$LXC" exec ncp -- rm -f "${NCDATA}"/data/nextcloud.log
           
           sudo "$LXC" stop ncp
       - name: Relaunch container
@@ -516,7 +520,8 @@ jobs:
           }
           sudo "$LXC" exec ncp -- bash -c "DEBIAN_FRONTEND=noninteractive ncp-dist-upgrade"
           
-          sudo "$LXC" exec ncp -- rm -f /opt/ncdata/data/nextcloud.log
+          NCDATA="$("$LXC" exec ncp -- jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
+          sudo "$LXC" exec ncp -- rm -f "${NCDATA}"/data/nextcloud.log
           
           sudo "$LXC" stop ncp
       - name: Relaunch container

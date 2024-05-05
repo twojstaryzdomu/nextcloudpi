@@ -303,6 +303,7 @@ jobs:
             exit 1
           }
           
+          NCDATA="$("${CONTAINER_CMD[@]}" jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
           success=false
           for attempt in {1..5}
           do
@@ -317,8 +318,8 @@ jobs:
               "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "tail -n20 /var/log/ncp.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
               echo "================"
               echo "${LOG_DIAG} Nextcloud log: "
-              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c 'ls -l /opt/ncdata/data/nextcloud.log' |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
-              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c 'cat /opt/ncdata/data/nextcloud.log' |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
+              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "ls -l \"${NCDATA}\"/data/nextcloud.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
+              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "cat \"${NCDATA}\"/data/nextcloud.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
               sleep 12
               continue
             }
@@ -344,7 +345,7 @@ jobs:
             echo "===================="
             
             echo "Nextcloud logs:"
-            sudo cat ./raspbian_root/opt/ncdata/data/nextcloud.log
+            sudo cat ./raspbian_root/"${NCDATA}"/data/nextcloud.log
             echo "===================="
             
             echo "MySQL logs:"
@@ -534,6 +535,7 @@ jobs:
 #            exit 1
 #          }
 #
+#          NCDATA="$("${CONTAINER_CMD[@]}" jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
 #          success=false
 #          for attempt in {1..5}
 #          do
@@ -548,8 +550,8 @@ jobs:
 #              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "tail -n20 /var/log/ncp.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
 #              echo "================"
 #              echo "${LOG_DIAG} Nextcloud log: "
-#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c 'ls -l /opt/ncdata/data/nextcloud.log' |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
-#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c 'cat /opt/ncdata/data/nextcloud.log' |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
+#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "ls -l \"${NCDATA}\"/data/nextcloud.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
+#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "cat \"${NCDATA}\"/data/nextcloud.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
 #              sleep 12
 #              continue
 #            }
@@ -593,8 +595,9 @@ jobs:
 #          #   "${CONTAINER_CMD[@]}" bash -c "DBG=x ncp-update-nc ${latest_nc_version?}"
 #          # fi
 #
+#          NCDATA="$("${CONTAINER_CMD[@]}" jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
 #          sudo machinectl terminate ncp
-#          sudo rm -f ./raspbian_root/opt/ncdata/data/nextcloud.log
+#          sudo rm -f ./raspbian_root/"${NCDATA}"/data/nextcloud.log
 #      - name: Test image after update
 #        if:  ${{ steps.download-previous-image.outputs.skipped == 'false' }}
 #        run: |
@@ -682,6 +685,7 @@ jobs:
 #            exit 1
 #          }
 #
+#          NCDATA="$("${CONTAINER_CMD[@]}" jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
 #          success=false
 #          for attempt in {1..5}
 #          do
@@ -696,8 +700,8 @@ jobs:
 #              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "tail -n20 /var/log/ncp.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
 #              echo "================"
 #              echo "${LOG_DIAG} Nextcloud log: "
-#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c 'ls -l /opt/ncdata/data/nextcloud.log' |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
-#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c 'cat /opt/ncdata/data/nextcloud.log' |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
+#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "ls -l \"${NCDATA}\"/data/nextcloud.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
+#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "cat \"${NCDATA}\"/data/nextcloud.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
 #              sleep 12
 #              continue
 #            }
@@ -727,8 +731,9 @@ jobs:
 #          }
 #          "${CONTAINER_CMD[@]}" DBG=x ncp-dist-upgrade "$VERSION"
 #
+#          NCDATA="$("${CONTAINER_CMD[@]}" jq -r .params[].value < /usr/local/etc/ncp-config.d/nc-datadir.cfg)"
 #          sudo machinectl terminate ncp
-#          sudo rm -f ./raspbian_root/opt/ncdata/data/nextcloud.log
+#          sudo rm -f ./raspbian_root/"${NCDATA}"/data/nextcloud.log
 #
 #      - name: Test image after dist-upgrade
 #        if:  ${{ steps.download-previous-image.outputs.skipped == 'false' }}
@@ -855,8 +860,8 @@ jobs:
 #              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "tail -n20 /var/log/ncp.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
 #              echo "================"
 #              echo "${LOG_DIAG} Nextcloud log: "
-#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c 'ls -l /opt/ncdata/data/nextcloud.log' |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
-#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c 'cat /opt/ncdata/data/nextcloud.log' |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
+#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "ls -l \"${NCDATA}\"/data/nextcloud.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
+#              "${CONTAINER_CMD[@]}" -q ncp /bin/bash -c "cat \"${NCDATA}\"/data/nextcloud.log" |& awk "{ print \"${LOG_DIAG} \" \$0 }" || true
 #              sleep 12
 #              continue
 #            }
