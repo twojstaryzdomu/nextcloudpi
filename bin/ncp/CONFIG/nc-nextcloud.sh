@@ -53,14 +53,17 @@ install()
 
   local REDIS_CONF=/etc/redis/redis.conf
   local REDISPASS="default"
-  sed -i "s|# unixsocket .*|unixsocket /var/run/redis/redis.sock|" $REDIS_CONF
-  sed -i "s|# unixsocketperm .*|unixsocketperm 770|"               $REDIS_CONF
-  sed -i "s|# requirepass .*|requirepass $REDISPASS|"              $REDIS_CONF
-  sed -i 's|# maxmemory-policy .*|maxmemory-policy allkeys-lru|'   $REDIS_CONF
-  sed -i 's|# rename-command CONFIG ""|rename-command CONFIG ""|'  $REDIS_CONF
-  sed -i "s|^port.*|port 0|"                                       $REDIS_CONF
-  echo "maxmemory $REDIS_MEM" >> $REDIS_CONF
-  echo 'vm.overcommit_memory = 1' >> /etc/sysctl.conf
+  set_variable $REDIS_CONF <<EOL
+unixsocket /var/run/redis/redis.sock
+unixsocketperm 770
+requirepass $REDISPASS
+maxmemory-policy allkeys-lru
+rename-command CONFIG ""
+port 0
+maxmemory $REDIS_MEM
+EOL
+  echo "maxmemory $REDIS_MEM" | set_variable $REDIS_CONF
+  echo 'vm.overcommit_memory=1' | set_variable /etc/sysctl.conf
 
   if is_lxc; then
     # Otherwise it fails to start in Buster LXC container

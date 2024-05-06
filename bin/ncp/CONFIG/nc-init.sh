@@ -19,9 +19,7 @@ configure()
   [[ "$REDISPASS" == "default" || "$REDISPASS" == "" ]] && {
     REDISPASS="$( openssl rand -base64 32 )"
     echo Provisioning Redis password
-    grep -q "^requirepass" ${REDIS_CONF} \
-      && sed -i -E "s|^requirepass .*|requirepass $REDISPASS|" ${REDIS_CONF} \
-      || echo "requirepass $REDISPASS" >> ${REDIS_CONF}
+    echo "requirepass $REDISPASS"| set_variable ${REDIS_CONF}
   }
 
   ## RE-CREATE DATABASE TABLE
