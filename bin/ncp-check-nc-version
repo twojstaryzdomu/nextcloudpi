@@ -7,7 +7,7 @@ set -e
 source /usr/local/etc/library.sh # sets NCLATESTVER
 
 CURRENT="$(ncc status | grep "version:" | awk '{ print $3 }')"
-LATEST="$(wget -qO- https://raw.githubusercontent.com/nextcloud/nextcloudpi/master/etc/ncp.cfg | jq -r .nextcloud_version)"
+LATEST="$(wget -qO- https://raw.githubusercontent.com/twojstaryzdomu/nextcloudpi/master/etc/ncp.cfg | jq -r .nextcloud_version)"
 NOTIFIED=/var/run/.nc-version-notified
 
 test -e "${NOTIFIED}" && [[ "${LATEST}" == "$( cat "${NOTIFIED}" )" ]] && {

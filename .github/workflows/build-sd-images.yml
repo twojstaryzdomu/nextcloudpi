@@ -385,7 +385,7 @@ jobs:
 #          mkdir -p output
 #          cd output
 #          wgetrc=0
-#          wgeterr="$(wget -O ./ncp.zip "https://github.com/nextcloud/nextcloudpi/releases/download/${PREVIOUS_VERSION?}/NextcloudPi_${{ inputs.board_name }}_${PREVIOUS_VERSION}.zip" 2>&1)" || wgetrc=$?
+#          wgeterr="$(wget -O ./ncp.zip "https://github.com/twojstaryzdomu/nextcloudpi/releases/download/${PREVIOUS_VERSION?}/NextcloudPi_${{ inputs.board_name }}_${PREVIOUS_VERSION}.zip" 2>&1)" || wgetrc=$?
 #          if [[ $wgetrc -ne 0 ]]
 #          then
 #            if echo "$wgeterr" | grep '404 Not Found'

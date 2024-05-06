@@ -41,7 +41,7 @@ type mysqld &>/dev/null \
 if [[ "${CODE_DIR}" == "" ]]; then
   echo "Getting build code..."
   CODE_DIR_TMP="${TEMPDIR}"/nextcloudpi
-  git clone -b "${BRANCH}" https://github.com/nextcloud/nextcloudpi.git "${CODE_DIR_TMP}"
+  git clone -b "${BRANCH}" https://github.com/twojstaryzdomu/nextcloudpi.git "${CODE_DIR_TMP}"
   cd "$CODE_DIR_TMP"
 else
   cd "${CODE_DIR}"

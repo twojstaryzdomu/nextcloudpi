@@ -8,7 +8,7 @@ trap "rm -rf \"${TEMPDIR}\"; exit 0" 0 1 2 3 15
 BRANCH="master"
 { [[ -f /.dockerenv ]] || [[ -f /.docker-image ]] || [[ "$DOCKERBUILD" == 1 ]]; } && BRANCH="docker-stable"
 
-git clone -b "$BRANCH" --depth 20 -q --bare https://github.com/nextcloud/nextcloudpi.git "$TEMPDIR" || {
+git clone -b "$BRANCH" --depth 20 -q --bare https://github.com/twojstaryzdomu/nextcloudpi.git "$TEMPDIR" || {
   echo "The git clone command failed: No connectivity to https://github.com ?" >&2
   exit 1
 }
