@@ -75,7 +75,7 @@ EOF
 
   $APTINSTALL libapache2-mod-authnz-external pwauth
   a2enmod authnz_external authn_core auth_basic
-  a2dissite 001-nextcloud
+  a2dissite ncp 001-nextcloud
   a2ensite ncp-activation
 
   ## NCP USER FOR AUTHENTICATION
