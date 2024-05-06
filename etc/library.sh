@@ -648,6 +648,17 @@ function restart_redis_if_stale() {
     || systemctl restart redis-server
 }
 
+function set_variable() {
+  while read l; do
+    grep -q "^${l}$" "${1}" && continue
+    p=${l%%=*}
+    p=${p%% *}
+    grep -q "^${p}[ =]" "${1}" \
+      && sed -i "s/^${p}[ =].*/${l}/" "${1}" \
+      || echo "${l}" >> "${1}"
+  done
+}
+
 # License
 #
 # This script is free software; you can redistribute it and/or modify it
