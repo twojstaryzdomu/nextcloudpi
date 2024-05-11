@@ -35,7 +35,7 @@ type mysqld &>/dev/null \
 
 # get dependencies
 [ -n "${NOUPDATE}" ] || apt-get update
-[ -n "${REINIT}" ] || DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y git ca-certificates sudo lsb-release wget jq gnupg2
+[ -n "${REINIT}" ] || DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y ca-certificates git gnupg2 jq lsb-release php sudo wget
 
 # get install code
 if [[ "${CODE_DIR}" == "" ]]; then
