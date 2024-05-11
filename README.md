@@ -192,16 +192,10 @@ _Note: this assumes a clean Debian install, and there is no rollback method_
 
 ### Curl install scripts
 
-This is executed as `root` as indicated by the `#`
+This script will be executed as `root`, `sudo` is not necessary
 
 ```
 # curl -sSL https://raw.githubusercontent.com/nextcloud/nextcloudpi/master/install.sh | bash
-```
-
-If you're not `root` you can run it with `sudo` like so
-
-```
-curl -sSL https://raw.githubusercontent.com/nextcloud/nextcloudpi/master/install.sh | sudo bash
 ```
 
 ### Environment variables for install.sh
@@ -218,10 +212,10 @@ When set to any value:
 - `REINIT` - re-initialise the configuration from scratch: drop NC database & user environment
 - `NCDATA` - overrides the NC data directory, defined in `etc/ncp-config.d/nc-datadir.cfg`
 
-NOTE: `sudo -E` is needed to source non-root user environment i.e.
+NOTE: `sudo -E` is normally needed to gain root and to source non-root user environment but not required here
 
 ```
-CODE_DIR=. NOUPDATE=1 NCHOSTNAME=my_own_hostname sudo -E bash install.sh
+CODE_DIR=. NOUPDATE=1 NCHOSTNAME=my_own_hostname | bash install.sh
 ```
 
 Also, for debug purposes:
