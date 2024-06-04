@@ -1,5 +1,11 @@
 # NextcloudPi Changelog
 
+## [v1.54.2a](https://github.com/nextcloud/nextcloudpi/tree/v1.54.2a) (2024-06-04) Support Nextcloud 29.0.1
+
+### Changes
+
+- Add support for Nextcloud 29.0.1
+
 ## [v1.54.2](https://github.com/nextcloud/nextcloudpi/tree/v1.54.2) (2024-05-08) Fixes for ncp-dist-upgrade (bookworm)
 
 ### Fixes
