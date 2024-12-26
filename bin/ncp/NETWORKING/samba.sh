@@ -11,7 +11,7 @@
 
 install()
 {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install --no-install-recommends -y samba
   update-rc.d smbd disable
   update-rc.d nmbd disable

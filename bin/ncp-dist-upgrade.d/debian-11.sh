@@ -37,8 +37,8 @@ save_maintenance_mode
 
 # Perform dist-upgrade
 
-apt-get update
-apt-get remove -y libc-dev-bin || true
+[ -n "${NOUPDATE}" ] || apt-get update
+dpkg -l libc-dev-bin | grep -q ^ii && apt-get remove -y libc-dev-bin || true
 apt-get upgrade -y
 for aptlist in /etc/apt/sources.list /etc/apt/sources.list.d/{php.list,armbian.list,raspi.list}
 do
@@ -51,7 +51,7 @@ do
     sed -i -e "s/deb/#deb/g" "$aptlist"
   }
 done
-apt-get update
+[ -n "${NOUPDATE}" ] || apt-get update
 apt-get upgrade -y dpkg
 apt-get upgrade -y --without-new-pkgs
 if is_lxc

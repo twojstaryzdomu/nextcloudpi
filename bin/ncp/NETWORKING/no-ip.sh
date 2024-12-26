@@ -11,7 +11,7 @@
 
 install()
 {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install --no-install-recommends -y make gcc libc-dev
 
   local TEMPDIR="$( mktemp -d /tmp/noip.XXXXXX )"

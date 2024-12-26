@@ -30,7 +30,7 @@ tmpl_letsencrypt_domain() {
 install()
 {
   cd /etc || return 1
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install --no-install-recommends -y letsencrypt
   rm -f /etc/cron.d/certbot
   mkdir -p /etc/letsencrypt/live

@@ -45,7 +45,7 @@ set -e; \
 touch /.ncp-image; \
 
 # installation
-apt-get update; \
+[ -n "${NOUPDATE}" ] || apt-get update; \
 apt-get install --no-install-recommends -y jq wget procps ca-certificates lsb-release; \
 
 source /usr/local/etc/library.sh; \
@@ -105,7 +105,7 @@ touch /.ncp-image; \
 touch /.docker-image; \
 
 # installation ( /var/www/nextcloud -> /data/app which will be in a volume )
-apt-get update; \
+[ -n "${NOUPDATE}" ] || apt-get update; \
 apt-get install --no-install-recommends -y sudo jq; \
 source /usr/local/etc/library.sh; \
 install_app /nc-nextcloud.sh; \
@@ -165,7 +165,7 @@ touch /.ncp-image; \
 # mark as docker image
 touch /.docker-image; \
 
-apt-get update; \
+[ -n "${NOUPDATE}" ] || apt-get update; \
 apt-get install --no-install-recommends -y wget ca-certificates; \
 
 # install nextcloudpiset_app_param nc-datadir.sh DATADIR '/data-ro/ncdata' \

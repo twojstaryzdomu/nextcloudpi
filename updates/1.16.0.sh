@@ -35,7 +35,7 @@ sed -i "s/stretch/$RELEASE/g" /etc/apt/sources.list.d/* &>/dev/null || true
   # https://lb.raspberrypi.org/forums/viewtopic.php?t=230779
   # https://github.com/nextcloud/nextcloudpi/issues/938
   test -f /usr/bin/raspi-config && {
-    apt-get update
+    [ -n "${NOUPDATE}" ] || apt-get update
     apt_install haveged
     systemctl enable haveged.service
   }
