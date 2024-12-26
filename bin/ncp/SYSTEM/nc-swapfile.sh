@@ -11,17 +11,19 @@
 
 is_active()
 {
+  [ -n "${SWAP}" ] || { echo "no SWAP added by default, enable by setting the SWAP variable"; return 1; }
   local DIR=$( swapon -s | sed -n 2p | awk '{ print $1 }' )
   [[ "$DIR" != "" ]] && [[ "$DIR" != "/var/swap" ]]
 }
 
 configure()
 {
+  [ -n "${SWAP}" ] || { echo "no SWAP added by default, enable by setting the SWAP variable"; return 0; }
   local ORIG="$( swapon | tail -1 | awk '{ print $1 }' )"
   local DSTDIR="$(dirname "$SWAPFILE")"
-  [[ "$ORIG" == "$SWAPFILE" ]] && { echo "nothing to do";                    return 0; }
+  [[ "$ORIG" == "$SWAPFILE" ]] && { echo "nothing to do"; return 0; }
   [[ -d "$SWAPFILE"         ]] && { echo "$SWAPFILE is a directory. Abort"; return 1; }
-  [[ -d "$DSTDIR"            ]] || { echo "$DSTDIR Doesn't exist. Abort";     return 1; }
+  [[ -d "$DSTDIR"            ]] || { echo "$DSTDIR Doesn't exist. Abort"; return 1; }
 
   [[ "$( stat -fc%T "$DSTDIR" )" == "btrfs" ]] && {
     echo "BTRFS doesn't support swapfiles. You can still use nc-zram"
@@ -47,6 +49,7 @@ configure()
 
 install()
 {
+  [ -n "${SWAP}" ] || { echo "no SWAP added by default, enable by setting the SWAP variable"; return 0; }
   if [[ "$(stat -fc%T /var)" != "btrfs" ]]; then
     apt_install dphys-swapfile
   fi
