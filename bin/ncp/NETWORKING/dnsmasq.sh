@@ -28,7 +28,7 @@ install()
 DNSStubListener=no
 EOF
       [[ "$INIT_SYSTEM" != "systemd" ]] || systemctl restart systemd-resolved
-    elif systemctl status resolvconf
+    elif dpkg-query -s resolvconf 2>/dev/null
     then
       systemctl stop resolvconf
       systemctl start dnsmasq
@@ -43,10 +43,7 @@ EOF
   fi
 
   service dnsmasq stop
-  if [[ "$INIT_SYSTEM" == "systemd" ]] && systemctl list-unit-files resolvconf.service
-  then
-    systemctl start resolvconf
-  fi
+  [[ "$INIT_SYSTEM" != "systemd" ]] || systemctl start systemd-resolved || { dpkg-query -s resolvconf 2>/dev/null && systemctl start resolvconf; }
   update-rc.d dnsmasq disable || rm /etc/systemd/system/multi-user.target.wants/dnsmasq.service
 
   return 0
