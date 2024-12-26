@@ -11,7 +11,7 @@
 
 install()
 {
-  set -x
+  [ -z "${DBG}" ] || set -${DBG}
   [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install --no-install-recommends -y dnsmasq
   sleep 10
