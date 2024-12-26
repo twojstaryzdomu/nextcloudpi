@@ -103,6 +103,7 @@ install()
   mysql_secure_installation <<EOF
 $DBPASSWD
 y
+y
 $DBPASSWD
 $DBPASSWD
 y
