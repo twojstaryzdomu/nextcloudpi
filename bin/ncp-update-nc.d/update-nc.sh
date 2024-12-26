@@ -82,7 +82,8 @@ cleanup() {
   local RET=$?
   set +eE
   echo "Clean up..."
-  rm -rf "$BASEDIR"/nextcloud.tar.bz2 "$BASEDIR"/nextcloud-old
+  [ -n "${KEEP_TAR}" ] || rm -rf "$BASEDIR"/nextcloud.tar.bz2
+  rm -rf "$BASEDIR"/nextcloud-old
   trap "" EXIT
   exit $RET
 }
@@ -132,7 +133,7 @@ trap rollback_simple INT TERM HUP ERR
 echo "Install Nextcloud $TARGET_VERSION..."
 mv -T nextcloud nextcloud-old
 tar -xf nextcloud.tar.bz2             # && false # test point
-rm -rf /var/www/nextcloud.tar.bz2
+[ -n "${KEEP_TAR}" ] || rm -rf /var/www/nextcloud.tar.bz2
 
 # copy old config
 ####################
@@ -166,7 +167,8 @@ rollback() {
   set +eE
   trap "" INT TERM HUP ERR EXIT
   echo -e "Abort\nClean up..."
-  rm -rf /var/www/nextcloud.tar.bz2 "$BASEDIR"/nextcloud-old
+  [ -n "${KEEP_TAR}" ] || rm -rf /var/www/nextcloud.tar.bz2
+  rm -rf "$BASEDIR"/nextcloud-old
   echo "Rolling back to backup $BKP..."
   local TMPDATA
   mkdir -p "$BASEDIR/recovery/"
