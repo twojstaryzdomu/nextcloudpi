@@ -31,8 +31,10 @@ install()
   # https://github.com/RPi-Distro/raspi-config/blob/master/raspi-config
   test -f /usr/bin/raspi-config && {
     # shellcheck disable=SC1003
-    sed -i '/S3 Password/i "S0 NextcloudPi Configuration" "Configuration of NextcloudPi" \\' /usr/bin/raspi-config
-    sed -i '/S3\\ \*) do_change_pass ;;/i S0\\ *) ncp-config ;;'                             /usr/bin/raspi-config
+    fgrep '      "S0 NextcloudPi Configuration" "Configuration of NextcloudPi" \' /usr/bin/raspi-config \
+      || sed -i '/S3 Password/i\      "S0 NextcloudPi Configuration" "Configuration of NextcloudPi" \\' /usr/bin/raspi-config
+    fgrep '      S0\ *) ncp-config ;;' /usr/bin/raspi-config \
+      || sed -i '/S3\\ \*) do_change_pass ;;/i\      S0\\ *) ncp-config ;;' /usr/bin/raspi-config
   }
 
   # add the ncc shortcut
