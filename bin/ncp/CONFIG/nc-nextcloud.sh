@@ -116,7 +116,7 @@ configure()
 
   echo "Installing  Nextcloud $VER..."
   tar -xf nextcloud.tar.bz2
-  rm nextcloud.tar.bz2
+  [ -n "${KEEP_TAR}" ] || rm -rf nextcloud.tar.bz2
 
   ## CONFIGURE FILE PERMISSIONS
   local ocpath='/var/www/nextcloud'
