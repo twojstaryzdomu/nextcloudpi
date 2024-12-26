@@ -30,7 +30,7 @@ is_active() {
 
 install()
 {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install -y --no-install-recommends pv openssh-client
   wget https://raw.githubusercontent.com/nachoparker/btrfs-sync/master/btrfs-sync -O /usr/local/bin/btrfs-sync
   chmod +x /usr/local/bin/btrfs-sync

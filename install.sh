@@ -40,7 +40,7 @@ to revert these changes afterwards (set PermitRootLogin to 'yes' in /etc/ssh/ssh
 }
 
 # get dependencies
-apt-get update
+[ -n "${NOUPDATE}" ] || apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y git ca-certificates sudo lsb-release wget jq gnupg2
 
 # get install code

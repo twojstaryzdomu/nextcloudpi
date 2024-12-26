@@ -11,7 +11,7 @@
 
 install()
 {
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     lynis debsecan debian-goodies debsums
   cp /etc/lynis/default.prf /etc/lynis/ncp.prf

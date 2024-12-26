@@ -25,7 +25,7 @@ install()
   [[ -f /usr/lib/systemd/system/nc-provisioning.service ]] && return 0
 
   # Optional packets for Nextcloud and Apps
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   $APTINSTALL lbzip2 iputils-ping jq wget
   # NOTE: php-smbclient in sury but not in Debian sources, we'll use the binary version
   # https://docs.nextcloud.com/server/latest/admin_manual/configuration_files/external_storage/smb.html
