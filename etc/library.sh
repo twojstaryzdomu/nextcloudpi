@@ -58,6 +58,12 @@ NCHOSTNAME=${NCHOSTNAME:-$(jq -r '.nextcloud_hostname | select( . != null )' < "
 NCLATESTVER=$(jq -r .nextcloud_version < "$NCPCFG")
 PHPVER=$(     jq -r .php_version       < "$NCPCFG")
 RELEASE=$(    jq -r .release           < "$NCPCFG")
+[ -n "${NCDATA}" ] || {
+  NCDDCFG="${CFGDIR}/nc-datadir.cfg"
+  [ -f "$NCDDCFG" ] || NCDDCFG="${CFGDIR#/usr/local/}/nc-datadir.cfg"
+  export NCDATA=$(jq -r .params[].value < "$NCDDCFG")
+}
+echo "Data directory $NCDATA" >&2
 # the default repo in bullseye is bullseye-security
 grep -Eh '^deb ' /etc/apt/sources.list | grep "${RELEASE}-security" > /dev/null && RELEASE="${RELEASE}-security"
 command -v ncc &>/dev/null && NCVER="$(ncc status 2>/dev/null | grep "version:" | awk '{ print $3 }')"
