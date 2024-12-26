@@ -82,7 +82,7 @@ EOF
   which letsencrypt &>/dev/null || install_app letsencrypt
 
   # update launchers
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt_install file
   cat > /home/www/ncp-launcher.sh <<'EOF'
 #!/bin/bash

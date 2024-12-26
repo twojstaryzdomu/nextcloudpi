@@ -12,7 +12,7 @@
 install()
 {
   set -x
-  apt-get update
+  [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install --no-install-recommends -y dnsmasq
   sleep 10
   rc=0
