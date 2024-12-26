@@ -8,6 +8,11 @@
 # More at https://ownyourbits.com/
 #
 
+[[ ${EUID} -ne 0 ]] && {
+  sudo -E $0
+  exit $?
+}
+
 source /usr/local/etc/library.sh
 
 set -e$DBG

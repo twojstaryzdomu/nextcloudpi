@@ -12,15 +12,15 @@
 BRANCH="${BRANCH:-master}"
 #DBG=x
 
+[[ ${EUID} -ne 0 ]] && {
+  sudo -E bash $0
+  exit $?
+}
+
 set -e$DBG
 
 TEMPDIR="$(mktemp -d /tmp/nextcloudpi.XXXXXX || (echo "Failed to create temp dir. Exiting" >&2 ; exit 1) )"
 trap "rm -rf \"${TEMPDIR}\"" 0 1 2 3 15
-
-[[ ${EUID} -ne 0 ]] && {
-  printf "Must be run as root. Try 'sudo $0'\n"
-  exit 1
-}
 
 export PATH="/usr/local/sbin:/usr/sbin:/sbin:${PATH}"
 
