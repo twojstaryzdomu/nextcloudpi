@@ -11,12 +11,6 @@
 install() {
   [ -n "${NOUPDATE}" ] || apt-get update
   apt-get install -y --no-install-recommends openssh-server
-  if grep '^PermitRootLogin' /etc/ssh/sshd_config
-  then
-    sed -i -e 's/^PermitRootLogin.*$/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
-  else
-    echo 'PermitRootLogin prohibit-password' >> /etc/ssh/sshd_config
-  fi
   systemctl reload ssh
  }
 
@@ -32,21 +26,6 @@ configure()
     systemctl disable ssh
     echo "SSH disabled"
     return 0
-  }
-
-  # Check for bad ideas
-  [[ "${USER,,}" == "pi" ]] && [[ "${PASS,,}" == "raspberry" ]] && {
-    echo "Refusing to use the default Raspbian user and password. It's insecure"
-    return 1
-  }
-  [[ "${USER,,}" == "root" ]] && {
-    echo "Refusing to use the root user for SSH. It's insecure"
-    return 1
-  }
-  # Disallow the webadmin to be used for SSH
-  [[ "${USER,,}" == "ncp" ]] && {
-    echo "The webadmin is not allowed to be used, pick another username"
-    return 1
   }
 
   # --force: exit successfully if the group already exists
