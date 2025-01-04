@@ -50,16 +50,17 @@
 <?php
     $nc_pwd  = rtrim( base64_encode( random_bytes(32) ) , '=' ); // remove last '='. Remove rtrim in the future
     $ncp_pwd = rtrim( base64_encode( random_bytes(32) ) , '=' ); // remove last '='. Remove rtrim in the future
+    $hostname = gethostname();
     echo <<<HTML
           <h1>NextCloudPi Activation</h1>
           <p>Your NextCloudPi user     is </p><input readonly              type="text" size=32 value="ncp">
           <p>Your NextCloudPi password is </p><input readonly id="ncp-pwd" type="text" size=32 value="{$ncp_pwd}">&nbsp;&nbsp;<img id="cp-ncp" src="../img/clippy.svg"><span id="cp-ncp-ok"></span>
-          <p>Save this password in order to access to the NextCloudPi web interface at https://nextcloudpi.local:4443</p>
+          <p>Save this password in order to access to the NextCloudPi web interface at <a href=https://$hostname.local:4443>https://$hostname.local:4443</a></p>
           <p>This password can be changed using 'nc-passwd'</p>
 <hr>
           <p>Your NextCloud     user     is </p><input readonly              type="text" size=32 value="ncp">
           <p>Your Nextcloud     password is </p><input readonly id="nc-pwd"  type="text" size=32 value="{$nc_pwd}">&nbsp;&nbsp;<img id="cp-nc" src="../img/clippy.svg"><span id="cp-nc-ok"></span>
-          <p>Save this password in order to access NextCloud https://nextcloudpi.local</p>
+          <p>Save this password in order to access NextCloud <a href=https://$hostname.local>https://$hostname.local</a></p>
           <p>This password can be changed from the Nextcloud user configuration</p>
 <br>
           <p>
