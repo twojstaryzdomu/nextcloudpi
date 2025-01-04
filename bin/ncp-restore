@@ -71,9 +71,12 @@ fi
 sed -i "s|'dbpassword' =>.*|'dbpassword' => '$DBPASSWD',|" /var/www/nextcloud/config/config.php
 
 # update redis credentials
-REDISPASS="$( grep "^requirepass" /etc/redis/redis.conf | cut -f2 -d' ' )"
-[[ "$REDISPASS" != "" ]] && \
-  sed -i "s|'password'.*|'password' => '$REDISPASS',|" /var/www/nextcloud/config/config.php
+REDISPASS="$( grep -Po "(?<=^requirepass)\s+\K\S+" ${REDIS_CONF} )"
+[[ "$REDISPASS" == "" ]] && {
+  REDISPASS="$( openssl rand -base64 32 )"
+  echo "requirepass ${REDISPASS}" >> ${REDIS_CONF}
+}
+sed -i "s|'password'.*|'password' => '$REDISPASS',|" /var/www/nextcloud/config/config.php
 service redis-server restart
 
 ## RE-CREATE DATABASE TABLE
