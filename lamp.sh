@@ -75,7 +75,7 @@ install()
     a2enmod mime
     a2enmod ssl
 
-    echo "ServerName localhost" >> /etc/apache2/apache2.conf
+    echo "ServerName localhost" | set_variable /etc/apache2/apache2.conf
 
 
     # CONFIGURE LAMP FOR NEXTCLOUD
