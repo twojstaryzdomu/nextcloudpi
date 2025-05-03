@@ -246,6 +246,12 @@ then
 
   # Reload library.sh to reset PHPVER
   source /usr/local/etc/library.sh
+elif ! is_more_recent_than "31.0.0" "${NCVER}" && is_more_recent_than "8.4.0" "${PHPVER}.0" && [[ "$DEBIAN_VERSION" -ge 12 ]]
+then
+  /usr/local/bin/ncp-update-nc.d/upgrade-php-bookworm-8.4.sh
+
+  # Reload library.sh to reset PHPVER
+  source /usr/local/etc/library.sh
 fi
 
 # refresh completions
