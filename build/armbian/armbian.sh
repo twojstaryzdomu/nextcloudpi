@@ -37,7 +37,7 @@ ARMBIAN_BUILD=yes CODE_DIR="$(pwd)" DBG=x bash install.sh || {
   echo "SOMETHING WENT WRONG, EXITING..."
   exit 1
 }
-sed -i 's/^ignore-warnings ARM64-COW-BUG//' /etc/redis/redis.conf
+sed -i 's/^ignore-warnings ARM64-COW-BUG//' ${REDIS_CONF}
 
 echo -e "\nPostinstall..."
 run_app_unsafe post-inst.sh
