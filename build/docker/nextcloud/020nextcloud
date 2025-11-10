@@ -24,11 +24,11 @@ rm /var/www/nextcloud
 ln -s /data/nextcloud /var/www/nextcloud
 
 echo "Starting Redis"
-sed -i 's|^requirepass .*|requirepass default|' /etc/redis/redis.conf
-chown redis:redis /etc/redis/redis.conf
+sed -i 's|^requirepass .*|requirepass default|' ${REDIS_CONF}
+chown redis:redis ${REDIS_CONF}
 mkdir -p /var/run/redis
 chown redis /var/run/redis
-sudo -u redis redis-server /etc/redis/redis.conf
+sudo -u redis redis-server ${REDIS_CONF}
 
 echo "Starting Cron"
 cron

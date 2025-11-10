@@ -87,11 +87,10 @@ configure()
   }
 
   # redis max memory
-  local CONF=/etc/redis/redis.conf
-  local CURRENT_REDIS_MEM="$( grep "^maxmemory" "$CONF" | awk '{ print $2 }' )"
-  [[ "$REDISMEM" == "$CURRENT_REDIS_MEM" ]] || {
-    sed -i "s|^maxmemory .*|maxmemory $REDISMEM|" "$CONF"
-    chown redis:redis "$CONF"
+  local CURRENT_REDIS_MEM="$( grep -Po "(?<=^maxmemory)\s+\K\S+" ${REDIS_CONF} )"
+  [[ "$REDISMEM" != "$CURRENT_REDIS_MEM" ]] && {
+    sed -i "s|^maxmemory .*|maxmemory $REDISMEM|" "$REDIS_CONF"
+    chown redis:redis "$REDIS_CONF"
     service redis-server restart
   }
 }
