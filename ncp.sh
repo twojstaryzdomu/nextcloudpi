@@ -275,7 +275,7 @@ NCP is not activated yet. Please enter https://'${NCHOSTNAME}'.local or this ins
     fi
 
     ## kernel hardening
-    cat >> /etc/sysctl.conf <<EOF
+    set_variable /etc/sysctl.conf <<EOF
 fs.protected_hardlinks=1
 fs.protected_symlinks=1
 kernel.core_uses_pid=1
