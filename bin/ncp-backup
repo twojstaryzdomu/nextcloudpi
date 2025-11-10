@@ -9,7 +9,7 @@ if [ "$1" = "--help" ]; then
  exit 0
 fi
 
-destdir="${1:-/media/USBdrive/ncp-backups}"
+destdir="${1:-$(find_app_param nc-backup DESTDIR)}"
 includedata="${2:-no}"
 compress="${3:-no}"
 backuplimit="${4:-0}"
