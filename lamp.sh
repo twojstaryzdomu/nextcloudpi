@@ -55,6 +55,8 @@ install()
     mkdir -p /run/mysqld
     chown mysql /run/mysqld
 
+    update-alternatives --set php /usr/bin/php${PHPVER}
+
     # CONFIGURE APACHE
     ##########################################
 
