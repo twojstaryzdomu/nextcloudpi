@@ -121,6 +121,7 @@ configure()
   else
     mv "${SRCDIR}" "${DATADIR}"
   fi
+  touch "${DATADIR}"/.ocdata
   chown www-data: "${DATADIR}"
 
   # datadir
