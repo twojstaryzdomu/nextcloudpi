@@ -17,6 +17,7 @@ export REDIS_CONF=${REDIS_CONF:-/etc/redis/redis.conf}
 export APACHE_LOG_DIR=${APACHE_LOG_DIR:-/var/log/apache2}
 export ARCH="$(dpkg --print-architecture)"
 export DB_PREFIX="$(php -r 'include("/var/www/nextcloud/config/config.php"); echo $CONFIG['"'dbtableprefix'"'];' || echo 'oc_')"
+export FS="ext|btrfs|zfs|f2fs"
 [[ "${ARCH}" =~ ^(armhf|arm)$ ]] && ARCH="armv7"
 [[ "${ARCH}" == "arm64" ]] && ARCH=aarch64
 [[ "${ARCH}" == "amd64" ]] && ARCH=x86_64
