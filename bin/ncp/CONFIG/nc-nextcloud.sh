@@ -79,6 +79,9 @@ EOF
   chown redis: "$REDIS_CONF"
   usermod -a -G redis www-data
 
+  local REDIS_LOGFILE=$( grep -Po '(?<=^logfile)\s+\K.*' $REDIS_CONF )
+  mkdir -p "${REDIS_LOGFILE%/*}"
+  chown redis: "${REDIS_LOGFILE%/*}"
   service redis-server restart
   update-rc.d redis-server enable
   clear_opcache
