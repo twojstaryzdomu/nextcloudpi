@@ -221,7 +221,7 @@ When set to any value:
 - `CODE_DIR` - sets the directory where the repo is stored locally, useful when it has been cloned manually
 - `NOUPDATE` - do not run `apt-get update` for every single script
 - `SWAP` - add swap explicitly
-- `KEEP_TAR` - do not remove /var/www/nextcloud-${VER}.tar.bz2, useful when the script is re-run multiple times
+- `KEEP_TAR` - do not remove `/var/www/nextcloud-${VER}.tar.bz2`, useful when the script is re-run multiple times
 - `NCHOSTNAME` - overrides the default NC hostname, defined in `etc/ncp.cfg`
 - `REINIT` - re-initialise the configuration from scratch: drop NC database & user environment
 - `NCDATA` - overrides the NC data directory, defined in `etc/ncp-config.d/nc-datadir.cfg`
