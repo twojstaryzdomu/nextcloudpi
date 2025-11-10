@@ -189,6 +189,9 @@ configure()
     install_template "php/opcache.ini.sh" "/etc/php/${PHPVER}/mods-available/opcache.ini"
   fi
 
+  ## configure php
+  install_template "php/pool.d.www.conf.sh" "/etc/php/${PHPVER}/fpm/pool.d/www.conf"
+
   ## RE-CREATE DATABASE TABLE
   # launch mariadb if not already running (for docker build)
   if ! [[ -f /run/mysqld/mysqld.pid ]]; then
