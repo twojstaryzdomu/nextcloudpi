@@ -94,6 +94,8 @@ EOF
 
   cd /var/www/nextcloud/
   rm -f config/config.php
+  [ ! -d /var/www/nextcloud/${ADMINUSER} ] \
+    || rm -rf /var/www/nextcloud/${ADMINUSER}
   ncc maintenance:install --database \
     "mysql" --database-name "nextcloud"  --database-user "$DBADMIN" --database-pass \
     "$DBPASSWD" --admin-user "$ADMINUSER" --admin-pass "$ADMINPASS"
