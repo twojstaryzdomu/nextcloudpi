@@ -26,7 +26,7 @@ on:
 
 jobs:
   build:
-    if: ${{ github.repository == 'nextcloud/nextcloudpi' }}
+    if: ${{ github.repository == 'twojstaryzdomu/nextcloudpi' }}
     runs-on: ubuntu-latest
     env:
       VERSION: "${{ inputs.git_ref || github.ref }}"
